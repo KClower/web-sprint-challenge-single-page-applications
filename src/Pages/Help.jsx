@@ -1,4 +1,6 @@
 import UndecidedImage from '../Images/Undecided.jpg';
+import { Link } from "react-router-dom";
+import OrderForm from '../Components/OrderForm';
 import {
     Card,
     CardBody,
@@ -35,9 +37,11 @@ export default function Help() {
                     <CardText>
                         Hot, Fresh, Chessy pizza with all the toppings.
                     </CardText>
-                    <Button>
-                        Get your pizza here
-                    </Button>
+                    <Link to="/OrderForm">
+                        <Button>
+                            Get your pizza here
+                        </Button>
+                    </Link>
                 </CardBody>
             </Card>
         </div>
