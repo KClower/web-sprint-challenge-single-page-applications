@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import ResturantImage from '../Images/Resturant.jpg';
 import PizzaHutImage from '../Images/PizzaHut.jpg';
 import DominosImage from '../Images/Dominos.jpg';
@@ -61,9 +62,11 @@ export default function HomePage() {
                         <CardText>
                             $2.99 Delivery Fee
                         </CardText>
-                        <Button>
-                            Order Now
-                        </Button>
+                        <Link to="/OrderForm">
+                            <Button>
+                                Order Now
+                            </Button>
+                        </Link>
                     </CardBody>
                 </Card>
                 <Card>
@@ -90,9 +93,11 @@ export default function HomePage() {
                         <CardText>
                             $2.99 Delivery Fee
                         </CardText>
-                        <Button>
-                            Order Now
-                        </Button>
+                        <Link to="/OrderForm">
+                            <Button>
+                                Order Now
+                            </Button>
+                        </Link>
                     </CardBody>
                 </Card>
                 <Card>
@@ -119,9 +124,11 @@ export default function HomePage() {
                         <CardText>
                             $2.99 Delivery Fee
                         </CardText>
-                        <Button>
-                            Order Now
-                        </Button>
+                        <Link to="/OrderForm">
+                            <Button>
+                                Order Now
+                            </Button>
+                        </Link>
                     </CardBody>
                 </Card>
             </CardGroup>
