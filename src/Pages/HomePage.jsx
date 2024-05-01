@@ -37,13 +37,14 @@ export default function HomePage() {
                 </CardImgOverlay>
             </Card>
             <h4 className='text-center'>Let's find your next meal</h4>
-            <CardGroup>
-                <Card>
+            <CardGroup className='mb-3'>
+                <Card className='rounded-end'>
                     <CardImg
                         alt="Pizza Hut store front"
                         src={PizzaHutImage}
                         top
                         width="100%"
+                        height="62.8%"
 
                     />
                     <CardBody>
@@ -69,7 +70,7 @@ export default function HomePage() {
                         </Link>
                     </CardBody>
                 </Card>
-                <Card>
+                <Card className='mx-2 border-start rounded'>
                     <CardImg
                         alt="Pizza"
                         src={Via313Image}
@@ -100,7 +101,7 @@ export default function HomePage() {
                         </Link>
                     </CardBody>
                 </Card>
-                <Card>
+                <Card className='border-start rounded-start'>
                     <CardImg
                         alt="Dominos pizza kitchen"
                         src={DominosImage}
