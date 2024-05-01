@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
     Form,
     FormGroup,
@@ -11,11 +11,23 @@ import {
 
 } from 'reactstrap';
 
+const personal = 'Personal 6"'
+const medium = 'Medium 8"'
+const large = 'Large 12"'
+const family = 'Family 16"'
+
+const pricingTable = {
+    [personal]: 5.00,
+    [medium]: 10.00,
+    [large]: 15.00,
+    [family]: 20.00,
+}
+
 const pizzaSizes = [
-    'Personal 6"',
-    'Medium 8"',
-    'Large 12"',
-    'Family 16"',
+    personal,
+    medium,
+    large,
+    family,
 ]
 
 const crustTypes = [
@@ -34,28 +46,6 @@ const sauceTypes = [
     "Ranch",
 
 ]
-
-// const toppings = [
-//     "Pepperoni",
-//     "Onion",
-//     "Bacon",
-//     "Beef",
-//     "Bell Pepper",
-//     "Tomatoes",
-//     "Sausage",
-//     "Black Olives",
-//     "Mushrooms",
-//     "Italian Sausage",
-//     "Green Olives",
-//     "Spinach",
-//     "Ham",
-//     "Jalapenos",
-//     "Feta Cheese",
-//     "Chicken",
-//     "Banana Peppers",
-//     "Pineapple",
-
-// ]
 
 const allToppings = [
     { name: "Pepperoni", checked: false },
@@ -79,13 +69,17 @@ const allToppings = [
 
 ]
 
+
+
 export default function OrderForm() {
+
+    const navigate = useNavigate()
     const [toppings, setToppings] = useState(allToppings)
     const [orderDetails, setOrderDetails] = useState({
         deliveryInfo: {
             fname: "",
             lname: "",
-            addresss: "",
+            address: "",
             address2: "",
             city: "",
             state: "",
@@ -98,16 +92,36 @@ export default function OrderForm() {
             toppings: [],
             specialInstructions: "",
         },
-        orderTotal: "",
+
     })
 
-    const { deliveryInfo, pizzaInfo, orderTotal } = orderDetails
+    const { deliveryInfo, pizzaInfo } = orderDetails
+
+    const orderTotal = pricingTable[pizzaInfo.size] ?? 0
 
     const checkBoxHandler = e => {
+
         const targetIndex = Number(e.target.getAttribute("data-topping-index"))
-        // if(pizzaInfo.toppings.length === 5){
-        //     return
-        // }
+        const topping = allToppings[targetIndex]
+        const toppingAlreadyAdded = pizzaInfo.toppings.includes(topping.name)
+
+        if (!toppingAlreadyAdded) {
+
+            if (pizzaInfo.toppings.length === 5) {
+                return
+            }
+            else {
+                setOrderDetails({ ...orderDetails, pizzaInfo: { ...pizzaInfo, toppings: [...orderDetails.pizzaInfo.toppings, topping.name] } })
+            }
+        }
+        else {
+            const newToppings = [...orderDetails.pizzaInfo.toppings]
+            const indexToRemove = pizzaInfo.toppings.indexOf(topping.name)
+            newToppings.splice(indexToRemove, 1)
+
+            setOrderDetails({ ...orderDetails, pizzaInfo: { ...pizzaInfo, toppings: newToppings } })
+        }
+
         const updatedToppings = toppings.map((topping, index) => {
             if (index === targetIndex) {
                 return { ...topping, checked: !topping.checked }
@@ -129,15 +143,23 @@ export default function OrderForm() {
             setOrderDetails({ ...orderDetails, deliveryInfo: { ...orderDetails.deliveryInfo, [event.target.name]: event.target.value } })
         }
         else {
-            setOrderDetails({ ...orderDetails, pizzaInfo: { ...orderDetails.pizzaInfo, [event.target.name]: event.target.value } })
+            let newDetails = { ...orderDetails, pizzaInfo: { ...orderDetails.pizzaInfo, [event.target.name]: event.target.value } }
+
+
+            setOrderDetails(newDetails)
         }
+
     }
 
+    const submitHandler = (e) => {
+        e.preventDefault()
+        navigate("/Confirmation", { state: { ...orderDetails, orderTotal } })
+    }
 
     return (
         <div className="container">
             <h2 className="text-center">Delivery Information</h2>
-            <Form>
+            <Form onSubmit={submitHandler}>
                 <Row>
                     <Col md={6}>
                         <FormGroup>
@@ -356,18 +378,18 @@ export default function OrderForm() {
                             <span class="input-group-text">$</span>
                             <Input
                                 type='text'
-                                value={orderTotal}
+                                value={orderTotal.toFixed(2)}
                                 onChange={changeHandler}
                                 readOnly
                             />
                         </FormGroup>
                     </Col>
                     <Col className='text-end'>
-                        <Link to="/Confirmation">
-                            <Button>
-                                Submit Order
-                            </Button>
-                        </Link>
+
+                        <Button>
+                            Submit Order
+                        </Button>
+
                     </Col>
                 </Row>
             </Form>
