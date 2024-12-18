@@ -12,7 +12,7 @@ import Confirmation from "./Pages/Confirmation";
 const App = () => {
   return (
     <>
-      <h1 className="card text-center mb-3">Lambda Eats</h1>
+      <h1 className="card text-center mb-3">Order Pizza</h1>
       <Header />
       <Routes>
         <Route exact path="/" element={<HomePage />} />
